@@ -7,7 +7,18 @@ R client for interacting with the [bioRxiv API](https://api.biorxiv.org)
 
 ## Installation
 
-Install the development version from Github:
+Install from CRAN:
+
+``` r
+# Install package
+install.packages("rbiorxiv")
+
+# Load package
+library(rbiorxiv)
+```
+
+Or install the development version from Github (using the
+[devtools](https://CRAN.R-project.org/package=devtools) package):
 
 ``` r
 # Install package
@@ -51,9 +62,9 @@ biorxiv_content(from = "2018-01-01", to = "2018-01-10", format = "df")
 biorxiv_content(doi = "10.1101/833400")
 ```
 
-The bioRxiv API currently also allows querying of details of medRxiv
-preprints, by supplying a “server” parameter. This can be specified as
-follows:
+The bioRxiv API also allows querying of details of
+[medRxiv](https://www.medrxiv.org/) preprints, by supplying a “server”
+parameter. This can be specified as follows:
 
 ``` r
 # Get details of medRxiv preprints deposited between 2020-01-01 and 2020-01-02
@@ -111,6 +122,13 @@ biorxiv_usage(interval = "m")
 biorxiv_usage(interval = "y")
 ```
 
+## API rate and usage limits
+
+No rate or usage limits are currently specified for the bioRxiv API,
+*however* all functions in this package enforce a 1-second timeout per
+API call when iterating through multiple pages of results (a single API
+call currently returns a maximum of 100 results per page).
+
 ## Examples
 
 ### Growth of bioRxiv over time
@@ -122,14 +140,14 @@ library(tidyverse)
 # Note that month dates are returned in YYYY-MM format - here we convert
 # month dates to YYYY-MM-DD format to make plotting easier
 biorxiv_summary(interval = "m", format = "df") %>%
-  mutate(month = as.Date(paste0(month, "-01", format = "%Y-%m-%d"))) %>%
+  mutate(month = as.Date(paste0(month, "-01"), format = "%Y-%m-%d")) %>%
   ggplot() +
   geom_bar(aes(x = month, y = new_papers_cumulative),
            fill = "#cccccc",
            stat = "identity") +
   labs(x = "",
-       y= "New preprints deposited (cumulative)",
-       title ="Growth of bioRxiv over time") +
+       y= "Submissions",
+       title ="Cumulative new bioRxiv submissions") +
   scale_x_date(date_breaks = "3 months",
                date_minor_breaks = "3 months",
                date_labels = "%b-%y",
@@ -203,7 +221,20 @@ biorxiv_published(from = "2013-11-01", to = "2018-12-31",
 
 ![](man/figures/biorxiv_time_to_publication.png)
 
-## Contributing
+## Other tools/packages for working medRxiv/bioRxiv data
 
-Contributors are extremely welcome\! Please contribute here directly, or
-contact me at <nicholasmfraser@gmail.com> for more information.
+`rbiorxiv` aims to provide a simple wrapper around the main endpoints of
+the [bioRxiv API](https://api.biorxiv.org/), and return data for further
+analysis/manipulation by the R user. Below are some additional packages
+that provide distinct but related functionality when working with
+bioRxiv and medRxiv data:
+
+-   [`medrxivr`](https://github.com/ropensci/medrxivr), developed by
+    [Luke McGuiness](https://github.com/mcguinlu) and part of the
+    [ROpenSci](https://ropensci.org/) ecosystem, provides users with
+    more powerful tools to download bioRxiv and medRxiv data, and search
+    downloaded preprint records using regular expressions and Boolean
+    login. `medrxivr` also allows users to export their search results
+    to a .BIB file for easy import to a reference manager, and to
+    download the full-text PDFs of preprints matching their search
+    criteria.

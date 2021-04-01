@@ -14,30 +14,60 @@
 
 <title>rbiorxiv</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -46,9 +76,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -102,6 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -303,16 +334,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <div id="about-biorxiv-and-medrxiv" class="section level2">
 <h2>About bioRxiv and medRxiv</h2>
-<p><a href="https://www.biorxiv.org/">bioRxiv</a> and <a href="https://www.medrxiv.org/">medRxiv</a> are a preprint repositoris for the biological and medical sciences, respectively, both hosted by the <a href="https://www.cshl.edu/">Cold Spring Harbor Laboratory</a> (CSHL).</p>
+<p><a href="https://www.biorxiv.org/">bioRxiv</a> and <a href="https://www.medrxiv.org/">medRxiv</a> are preprint repositories for the biological and medical sciences, respectively, both hosted by the <a href="https://www.cshl.edu/">Cold Spring Harbor Laboratory</a> (CSHL).</p>
 <p>Metadata of preprints from both repositories can be accessed via a singular API service hosted on bioRxiv, available at <a href="https://api.biorxiv.org/">https://api.biorxiv.org</a>. This package, <code>rbiorxiv</code>, provides a simple interface for interacting with this API service, to allow retrieval of metadata for bioRxiv and medRxiv preprints.</p>
 </div>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>Install development version from Github</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;nicholasmfraser/rbiorxiv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;nicholasmfraser/rbiorxiv&quot;</span>)</span></code></pre></div>
 <p>Load package</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(rbiorxiv)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rbiorxiv)</span></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2>Usage</h2>
@@ -320,60 +351,60 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="content-detail" class="section level3">
 <h3>Content detail</h3>
 <p>Retrieve details of either a set of preprints deposited between two dates, or lookup a single preprint by DOI:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Get details of preprints deposited between 2018-01-01 and 2018-01-10</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="co"># By default, only the first 100 records are returned</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="kw">biorxiv_content</span>(<span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>)</a>
-<a class="sourceLine" id="cb3-4" title="4"></a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="co"># Set a limit to return more than 100 records</span></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="kw">biorxiv_content</span>(<span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="dt">limit =</span> <span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb3-7" title="7"></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="co"># Or set limit as &quot;*&quot; to return all records</span></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="kw">biorxiv_content</span>(<span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="dt">limit =</span> <span class="st">&quot;*&quot;</span>)</a>
-<a class="sourceLine" id="cb3-10" title="10"></a>
-<a class="sourceLine" id="cb3-11" title="11"><span class="co"># Skip the first 100 records</span></a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="kw">biorxiv_content</span>(<span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="dt">limit =</span> <span class="dv">200</span>, <span class="dt">skip =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb3-13" title="13"></a>
-<a class="sourceLine" id="cb3-14" title="14"><span class="co"># By default, data is returned in a list. Use the &quot;format&quot; argument to specify</span></a>
-<a class="sourceLine" id="cb3-15" title="15"><span class="co"># that data should be returned in &quot;json&quot; format or as a data frame (&quot;df&quot;).</span></a>
-<a class="sourceLine" id="cb3-16" title="16"><span class="kw">biorxiv_content</span>(<span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;df&quot;</span>)</a>
-<a class="sourceLine" id="cb3-17" title="17"></a>
-<a class="sourceLine" id="cb3-18" title="18"><span class="co"># Lookup a preprint by DOI</span></a>
-<a class="sourceLine" id="cb3-19" title="19"><span class="kw">biorxiv_content</span>(<span class="dt">doi =</span> <span class="st">&quot;10.1101/833400&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get details of preprints deposited between 2018-01-01 and 2018-01-10</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># By default, only the first 100 records are returned</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a limit to return more than 100 records</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="at">limit =</span> <span class="dv">200</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Or set limit as &quot;*&quot; to return all records</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="at">limit =</span> <span class="st">&quot;*&quot;</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Skip the first 100 records</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="at">limit =</span> <span class="dv">200</span>, <span class="at">skip =</span> <span class="dv">100</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># By default, data is returned in a list. Use the &quot;format&quot; argument to specify</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># that data should be returned in &quot;json&quot; format or as a data frame (&quot;df&quot;).</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="at">format =</span> <span class="st">&quot;df&quot;</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Lookup a preprint by DOI</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">doi =</span> <span class="st">&quot;10.1101/833400&quot;</span>)</span></code></pre></div>
 <p>The bioRxiv API currently also allows querying of details of medRxiv preprints, by supplying a “server” parameter. This can be specified as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Get details of medRxiv preprints deposited between 2020-01-01 and 2020-01-02</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="kw">biorxiv_content</span>(<span class="dt">server =</span> <span class="st">&quot;medrxiv&quot;</span>, <span class="dt">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2020-01-02&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get details of medRxiv preprints deposited between 2020-01-01 and 2020-01-02</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_content</span>(<span class="at">server =</span> <span class="st">&quot;medrxiv&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-01-02&quot;</span>)</span></code></pre></div>
 <p>The default server parameter is always “biorxiv”. Note that the following functions documented below are limited to bioRxiv only (at the time of writing).</p>
 </div>
 <div id="published-article-detail" class="section level3">
 <h3>Published article detail</h3>
 <p>Retrieve details of published articles associated with bioRxiv preprints that were published between two dates:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># Get details of all articles published between 2018-01-01 and 2018-01-10</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="kw">biorxiv_published</span>(<span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="dt">limit =</span> <span class="st">&quot;*&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;df&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get details of all articles published between 2018-01-01 and 2018-01-10</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_published</span>(<span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, <span class="at">limit =</span> <span class="st">&quot;*&quot;</span>, <span class="at">format =</span> <span class="st">&quot;df&quot;</span>)</span></code></pre></div>
 </div>
 <div id="publisher-article-detail" class="section level3">
 <h3>Publisher article detail</h3>
 <p>Retrieve details of articles published by a specific publisher (specified by their doi prefix) between two dates:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Get details of all articles published by eLife (prefix = 10.7554) between 2018-01-01 and 2018-01-10</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="kw">biorxiv_publisher</span>(<span class="dt">prefix =</span> <span class="st">&quot;10.7554&quot;</span>, <span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, </a>
-<a class="sourceLine" id="cb6-3" title="3">                   <span class="dt">limit =</span> <span class="st">&quot;*&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;df&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get details of all articles published by eLife (prefix = 10.7554) between 2018-01-01 and 2018-01-10</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_publisher</span>(<span class="at">prefix =</span> <span class="st">&quot;10.7554&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2018-01-10&quot;</span>, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">limit =</span> <span class="st">&quot;*&quot;</span>, <span class="at">format =</span> <span class="st">&quot;df&quot;</span>)</span></code></pre></div>
 </div>
 <div id="content-summary-statistics" class="section level3">
 <h3>Content summary statistics</h3>
 <p>Retrieve summary statistics for bioRxiv content (e.g. number of preprints deposited):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Get summary statistics at a montly level</span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="kw">biorxiv_summary</span>(<span class="dt">interval =</span> <span class="st">&quot;m&quot;</span>)</a>
-<a class="sourceLine" id="cb7-3" title="3"></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co"># Get summary statistics at a yearly level</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="kw">biorxiv_summary</span>(<span class="dt">interval =</span> <span class="st">&quot;y&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get summary statistics at a montly level</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_summary</span>(<span class="at">interval =</span> <span class="st">&quot;m&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get summary statistics at a yearly level</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_summary</span>(<span class="at">interval =</span> <span class="st">&quot;y&quot;</span>)</span></code></pre></div>
 </div>
 <div id="usage-summary-statistics" class="section level3">
 <h3>Usage summary statistics</h3>
 <p>Retrieve summary statistics for usage of bioRxiv content (e.g. number of pdf downloads):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Get usage statistics at a montly level</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="kw">biorxiv_usage</span>(<span class="dt">interval =</span> <span class="st">&quot;m&quot;</span>)</a>
-<a class="sourceLine" id="cb8-3" title="3"></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="co"># Get usage statistics at a yearly level</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="kw">biorxiv_usage</span>(<span class="dt">interval =</span> <span class="st">&quot;y&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get usage statistics at a montly level</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_usage</span>(<span class="at">interval =</span> <span class="st">&quot;m&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get usage statistics at a yearly level</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">biorxiv_usage</span>(<span class="at">interval =</span> <span class="st">&quot;y&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 
